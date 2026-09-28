@@ -1,6 +1,6 @@
 FROM node:20-alpine AS builder
 
-WORKDIR /home/clickup-automation-be
+WORKDIR /home/field-sales-be
 
 COPY package*.json ./
 RUN npm ci
@@ -10,14 +10,14 @@ RUN npm run build
 
 FROM node:20-alpine AS runtime
 
-WORKDIR /home/clickup-automation-be
+WORKDIR /home/field-sales-be
 
 ENV NODE_ENV=production
 
 COPY package*.json ./
 RUN npm ci --omit=dev
 
-COPY --from=builder /home/clickup-automation-be/dist ./dist
+COPY --from=builder /home/field-sales-be/dist ./dist
 
 EXPOSE ${PORT}
 

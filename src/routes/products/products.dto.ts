@@ -1,0 +1,3 @@
+import { ApiPropertyOptional } from "@nestjs/swagger"; import { IsBoolean, IsInt, IsOptional, IsString, Min, MinLength } from "class-validator";
+export class ProductDto { @IsString() @MinLength(1) sku: string; @IsString() @MinLength(1) name: string; @IsOptional() @IsString() category?: string; @IsOptional() @IsString() imageUrl?: string; @IsInt() @Min(0) pricePerBoxMinor: number; @IsInt() @Min(1) unitsPerBox: number; @IsOptional() @IsBoolean() isActive?: boolean; }
+export class ProductQuery { @ApiPropertyOptional() @IsOptional() @IsString() search?: string; @ApiPropertyOptional() @IsOptional() @IsBoolean() active?: boolean; }

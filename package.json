@@ -1,7 +1,7 @@
 {
   "name": "clickup-automation-be",
   "version": "0.1.0",
-  "description": "Backend API for ClickUp time-entry automation",
+  "description": "Backend API for field-sales order taking and delivery",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -21,7 +21,8 @@
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "migration:generate": "bash -c 'npm run typeorm -- migration:generate src/providers/db/migrations/$1 -d src/providers/db/postgres.provider.ts' --",
     "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/providers/db/postgres.provider.ts",
-    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/providers/db/postgres.provider.ts"
+    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/providers/db/postgres.provider.ts",
+    "seed": "ts-node -r tsconfig-paths/register src/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-WORKDIR /home/clickup-automation-be
+WORKDIR /home/field-sales-be
 
 COPY package*.json ./
 

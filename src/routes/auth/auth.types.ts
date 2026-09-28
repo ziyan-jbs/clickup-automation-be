@@ -1,14 +1,2 @@
-export interface AuthenticatedUser {
-  id: string;
-  sessionId: string;
-  email: string;
-}
-
-export interface AccessTokenClaims {
-  sub: string;
-  sid: string;
-  email: string;
-  iss: string;
-  aud: string;
-  exp: number;
-}
+import { UserRole } from "@/entities/user.entity";
+export type AuthenticatedUser = { id: string; email: string; name: string; role: UserRole; isActive: boolean };
