@@ -2,6 +2,10 @@ You are building the backend for a food brand distributor’s field-sales system
 
 `/Users/muhammadziyan/work/wa/clickup-automation-be`
 
+## Testing policy
+
+Do not run tests, lint, type checking, builds, Docker commands, migrations, seed commands, or live API/Swagger checks unless I explicitly request testing in the current task. Do not add test files for routine changes unless I ask for tests. Make the code or documentation change and tell me which checks were not run. If I ask for testing, run only the checks needed for that request; do not repeat the full verification suite after each edit. This policy overrides the verification instructions later in this document.
+
 ## Goal and deadline
 
 I need a working backend for a client demo on Saturday, October 3, 2026. The client owns an agency that distributes a food brand to shops. Sales representatives visit shops, take orders for products in boxes, and the agency processes and delivers those orders.
@@ -172,9 +176,9 @@ Create a repeatable seed command with realistic, clearly fictional data:
 
 Do not hardcode private credentials in tracked source files. Use documented demo credentials through a seed configuration or development-only environment variables and explain how to use them. The seed must not create duplicate records every time it runs.
 
-## Verification
+## Verification (only when explicitly requested)
 
-Make the entire P0 flow work against the real PostgreSQL database, not in-memory data or mocks. At minimum, verify:
+When I explicitly request full P0 verification, use the real PostgreSQL database, not in-memory data or mocks. Verify:
 - Rep cannot submit for another rep’s shop.
 - Price and total come from the server, even if the client sends a different price.
 - Double submission with the same idempotency key creates one order.
@@ -184,7 +188,7 @@ Make the entire P0 flow work against the real PostgreSQL database, not in-memory
 - Invalid status transitions fail.
 - Docker startup, migrations, and seed run successfully.
 
-Add focused tests for the critical rules above using the repository’s existing testing approach. Run lint/type checking and applicable tests, and fix failures. Do not spend time adding trivial tests that only repeat implementation details.
+When tests are requested, focus on critical rules using the repository’s existing testing approach. Run lint/type checking only if requested or needed for the specific test request. Do not spend time adding trivial tests that only repeat implementation details.
 
 ## Working style and final handoff
 
@@ -197,7 +201,7 @@ Implement the work, rather than stopping after producing a plan. Proceed in this
 5. Implement shops and products.
 6. Implement the order lifecycle end to end.
 7. Implement reports.
-8. Document and verify the API and Docker startup.
+8. Document the API and Docker startup. Verify them only when explicitly requested.
 
 If you encounter an ambiguity, make a sensible demo assumption, record it in the README, and continue. Prioritize a working complete flow over optional features or visual polish.
 

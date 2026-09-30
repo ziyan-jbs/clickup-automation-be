@@ -7,4 +7,19 @@ import { AuthController } from "@/routes/auth/auth.controller";
 import { AuthService } from "@/routes/auth/auth.service";
 import { JwtAuthGuard } from "@/routes/auth/jwt-auth.guard";
 import { RolesGuard } from "@/routes/auth/roles.guard";
-@Module({ imports: [TypeOrmModule.forFeature([User]), JwtModule.registerAsync({ imports: [ConfigModule], inject: [ConfigService], useFactory: (config: ConfigService) => ({ secret: config.get<string>("security.jwtAccessSecret") }) })], controllers: [AuthController], providers: [AuthService, JwtAuthGuard, RolesGuard], exports: [JwtAuthGuard, RolesGuard, JwtModule] }) export class AuthModule {}
+@Module({
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.get<string>("security.jwtAccessSecret"),
+      }),
+    }),
+  ],
+  controllers: [AuthController],
+  providers: [AuthService, JwtAuthGuard, RolesGuard],
+  exports: [JwtAuthGuard, RolesGuard, JwtModule],
+})
+export class AuthModule {}

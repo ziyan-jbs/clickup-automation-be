@@ -1,11 +1,29 @@
-import { BeforeInsert, Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { nanoid } from "nanoid";
 import { Shop } from "@/entities/shop.entity";
 import { User } from "@/entities/user.entity";
 import { OrderLine } from "@/entities/order-line.entity";
 import { OrderStatusEvent } from "@/entities/order-status-event.entity";
 
-export enum OrderStatus { SUBMITTED = "SUBMITTED", ACCEPTED = "ACCEPTED", DELIVERED = "DELIVERED", PARTIALLY_DELIVERED = "PARTIALLY_DELIVERED", CANCELLED = "CANCELLED" }
+export enum OrderStatus {
+  SUBMITTED = "SUBMITTED",
+  ACCEPTED = "ACCEPTED",
+  PICKED_UP = "PICKED_UP",
+  DELIVERED = "DELIVERED",
+  PARTIALLY_DELIVERED = "PARTIALLY_DELIVERED",
+  CANCELLED = "CANCELLED",
+}
 @Entity({ name: "orders" })
 @Index(["status", "deliveredAt"])
 @Index(["repId", "submittedAt"])
@@ -23,6 +41,7 @@ export class Order {
   @Index({ unique: true }) @Column({ type: "varchar", length: 100 }) idempotencyKey: string;
   @Column({ type: "timestamptz" }) submittedAt: Date;
   @Column({ type: "timestamptz", nullable: true }) acceptedAt: Date | null;
+  @Column({ type: "timestamptz", nullable: true }) pickedUpAt: Date | null;
   @Column({ type: "timestamptz", nullable: true }) deliveredAt: Date | null;
   @ManyToOne(() => Shop, { onDelete: "RESTRICT" }) @JoinColumn({ name: "shopId" }) shop: Shop;
   @ManyToOne(() => User, { onDelete: "RESTRICT" }) @JoinColumn({ name: "repId" }) rep: User;
@@ -30,5 +49,10 @@ export class Order {
   @OneToMany(() => OrderStatusEvent, (event) => event.order) statusEvents: OrderStatusEvent[];
   @CreateDateColumn() createdAt: Date;
   @UpdateDateColumn() updatedAt: Date;
-  @BeforeInsert() createId(): void { this.id = this.id || `ord_${nanoid(16)}`; this.orderNumber = this.orderNumber || `SO-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${nanoid(6).toUpperCase()}`; }
+  @BeforeInsert() createId(): void {
+    this.id = this.id || `ord_${nanoid(16)}`;
+    this.orderNumber =
+      this.orderNumber ||
+      `SO-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${nanoid(6).toUpperCase()}`;
+  }
 }

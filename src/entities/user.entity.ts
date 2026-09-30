@@ -1,7 +1,19 @@
-import { BeforeInsert, Column, CreateDateColumn, Entity, Index, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { nanoid } from "nanoid";
 
-export enum UserRole { ADMIN = "ADMIN", SALES_REP = "SALES_REP" }
+export enum UserRole {
+  SUPER_ADMIN = "SUPER_ADMIN",
+  ADMIN = "ADMIN",
+  SALES_REP = "SALES_REP",
+}
 
 @Entity({ name: "users" })
 export class User {
@@ -11,7 +23,10 @@ export class User {
   @Column({ type: "text", select: false }) passwordHash: string;
   @Column({ type: "enum", enum: UserRole }) role: UserRole;
   @Column({ type: "boolean", default: true }) isActive: boolean;
+  @Column({ type: "boolean", default: true }) requiresShopApproval: boolean;
   @CreateDateColumn() createdAt: Date;
   @UpdateDateColumn() updatedAt: Date;
-  @BeforeInsert() createId(): void { this.id = this.id || `usr_${nanoid(16)}`; }
+  @BeforeInsert() createId(): void {
+    this.id = this.id || `usr_${nanoid(16)}`;
+  }
 }

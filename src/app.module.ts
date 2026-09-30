@@ -13,5 +13,32 @@ import { ProductsModule } from "@/routes/products/products.module";
 import { ShopsModule } from "@/routes/shops/shops.module";
 import { OrdersModule } from "@/routes/orders/orders.module";
 import { ReportsModule } from "@/routes/reports/reports.module";
-@Module({ imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: `.env.${process.env.ENVIRONMENT || "development"}`, load: [configuration], validate: validateEnvironment }), TypeOrmModule.forRootAsync({ inject: [ConfigService], useFactory: () => postgresDataSourceOptions }), AuthModule, UsersModule, ProductsModule, ShopsModule, OrdersModule, ReportsModule], controllers: [AppController], providers: [{ provide: APP_FILTER, useClass: AllExceptionsFilter }] })
-export class AppModule implements NestModule { configure(consumer: MiddlewareConsumer): void { consumer.apply(RequestIdMiddleware).forRoutes({ path: "*path", method: RequestMethod.ALL }); } }
+import { TargetsModule } from "@/routes/targets/targets.module";
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.ENVIRONMENT || "development"}`,
+      load: [configuration],
+      validate: validateEnvironment,
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: () => postgresDataSourceOptions,
+    }),
+    AuthModule,
+    UsersModule,
+    ProductsModule,
+    ShopsModule,
+    OrdersModule,
+    ReportsModule,
+    TargetsModule,
+  ],
+  controllers: [AppController],
+  providers: [{ provide: APP_FILTER, useClass: AllExceptionsFilter }],
+})
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(RequestIdMiddleware).forRoutes({ path: "*path", method: RequestMethod.ALL });
+  }
+}
